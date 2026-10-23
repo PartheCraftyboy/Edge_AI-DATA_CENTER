@@ -1,0 +1,91 @@
+{
+ "backbone": "palimpsest_net",
+ "pretrained": false,
+ "epochs": 15,
+ "batch_size": 64,
+ "lr": 0.0003,
+ "device": "cuda",
+ "train_seconds": 43.1,
+ "best_val_macro_f1": 0.9915927648544312,
+ "checkpoint": "/home/kalki/Pro/DC_project/backend/runs_v2/palimpsest_net/best.ckpt",
+ "test": {
+  "test/loss": 0.050136689096689224,
+  "test/acc": 0.9926393032073975,
+  "test/macro_f1": 0.9925467371940613,
+  "test/ece": 0.028118010610342026
+ },
+ "val_confusion": [
+  [
+   170,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   2,
+   199,
+   0,
+   3,
+   0
+  ],
+  [
+   0,
+   0,
+   188,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   186,
+   0
+  ],
+  [
+   2,
+   1,
+   0,
+   0,
+   197
+  ]
+ ],
+ "test_confusion": [
+  [
+   193,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   188,
+   0,
+   1,
+   0
+  ],
+  [
+   0,
+   0,
+   185,
+   0,
+   0
+  ],
+  [
+   0,
+   1,
+   3,
+   180,
+   0
+  ],
+  [
+   1,
+   1,
+   0,
+   0,
+   198
+  ]
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "backbone": "squeezenet1_1",
+ "pretrained": true,
+ "epochs": 15,
+ "batch_size": 64,
+ "lr": 0.0003,
+ "device": "cuda",
+ "train_seconds": 57.6,
+ "best_val_macro_f1": 0.9967367649078369,
+ "checkpoint": "/home/kalki/Pro/DC_project/backend/runs/squeezenet1_1/best.ckpt",
+ "test": {
+  "test/loss": 0.004385779611766338,
+  "test/acc": 0.9989484548568726,
+  "test/macro_f1": 0.9989817142486572,
+  "test/ece": 0.0007608680170960724
+ },
+ "val_confusion": [
+  [
+   169,
+   0,
+   0,
+   0,
+   1
+  ],
+  [
+   0,
+   204,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   188,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   186,
+   0
+  ],
+  [
+   2,
+   0,
+   0,
+   0,
+   198
+  ]
+ ],
+ "test_confusion": [
+  [
+   192,
+   0,
+   0,
+   0,
+   1
+  ],
+  [
+   0,
+   189,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   185,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   184,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   200
+  ]
+ ]
+}

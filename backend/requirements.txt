@@ -1,0 +1,45 @@
+# Palimpsest — backend dependencies
+#
+# Python 3.12. The system Python is 3.14, which PyTorch does not ship wheels
+# for yet, so the environment is pinned rather than inherited.
+#
+#   cd backend
+#   uv venv --python 3.12 .venv
+#   uv pip install -r requirements.txt
+#
+# Exact pins for reproducing this environment are in requirements.lock.txt.
+
+# --- API surface -------------------------------------------------------------
+fastapi>=0.115
+uvicorn[standard]>=0.32
+python-multipart>=0.0.12          # page image upload
+
+# --- models and training (Modules 2, 3, 5) -----------------------------------
+torch>=2.5                        # default Linux wheel is CUDA-enabled, so the
+torchvision>=0.20                 #   RTX 4050 works with no reinstall once on
+lightning>=2.4                    # training loop, checkpointing, device-agnostic
+torchmetrics>=1.5                 # confusion matrix, macro-F1, calibration error
+
+# --- imaging and preprocessing (Module 4) ------------------------------------
+numpy>=1.26
+pillow>=11.0
+opencv-python-headless>=4.10      # CLAHE, perspective warp, bilateral, deskew
+scikit-image>=0.24                # Sauvola local thresholding
+scipy>=1.14
+
+# --- symbolic maths and figure rendering -------------------------------------
+sympy>=1.13                       # expression solver: parse, substitute, evaluate
+matplotlib>=3.9                   # the real plots embedded in compiled notes
+
+# --- tests -------------------------------------------------------------------
+pytest>=8.3                       # the solver and symbol table carry real edge
+                                  #   cases, so they are tested rather than eyeballed
+
+# --- local model and tooling -------------------------------------------------
+httpx>=0.27                       # talks to the Ollama HTTP API
+huggingface-hub>=0.26             # PaddleOCR-VL weights, and lazy reads of the
+pyarrow>=18.0                     #   GNHK parquet over HTTP range requests, so
+                                  #   ingesting 200 pages does not pull 730 MB
+typer>=0.12                       # CLI: generate, train, evaluate
+rich>=13.9                        # readable training and CLI output
+nvidia-ml-py>=12.535              # GPU util, temp, power for palimtop (optional at runtime)

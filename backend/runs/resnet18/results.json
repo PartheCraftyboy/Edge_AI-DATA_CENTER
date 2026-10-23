@@ -1,0 +1,91 @@
+{
+ "backbone": "resnet18",
+ "pretrained": true,
+ "epochs": 15,
+ "batch_size": 64,
+ "lr": 0.0003,
+ "device": "cuda",
+ "train_seconds": 110.0,
+ "best_val_macro_f1": 1.0,
+ "checkpoint": "/home/kalki/Pro/DC_project/backend/runs/resnet18/best.ckpt",
+ "test": {
+  "test/loss": 0.0032824522349983454,
+  "test/acc": 0.9989484548568726,
+  "test/macro_f1": 0.9989528059959412,
+  "test/ece": 0.0015066650230437517
+ },
+ "val_confusion": [
+  [
+   170,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   204,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   188,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   186,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   200
+  ]
+ ],
+ "test_confusion": [
+  [
+   192,
+   1,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   189,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   185,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   184,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   200
+  ]
+ ]
+}

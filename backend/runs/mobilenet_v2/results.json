@@ -1,0 +1,91 @@
+{
+ "backbone": "mobilenet_v2",
+ "pretrained": true,
+ "epochs": 15,
+ "batch_size": 64,
+ "lr": 0.0003,
+ "device": "cuda",
+ "train_seconds": 128.0,
+ "best_val_macro_f1": 1.0,
+ "checkpoint": "/home/kalki/Pro/DC_project/backend/runs/mobilenet_v2/best.ckpt",
+ "test": {
+  "test/loss": 0.0033636053558439016,
+  "test/acc": 0.9978969693183899,
+  "test/macro_f1": 0.9979180693626404,
+  "test/ece": 0.0018348799785599113
+ },
+ "val_confusion": [
+  [
+   170,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   204,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   188,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   186,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   200
+  ]
+ ],
+ "test_confusion": [
+  [
+   193,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   189,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   184,
+   0,
+   1
+  ],
+  [
+   0,
+   0,
+   0,
+   183,
+   1
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   200
+  ]
+ ]
+}

@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+.env
+venv/
+.venv/
+ucs668/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter
+.ipynb_checkpoints
+
+# VSCode / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / Astro
+node_modules/
+.astro/
+dist/
+.output/
+.vercel/
+*.tsbuildinfo
+npm-debug.log*
+.env.*
+
+# Model weights cache (torchvision downloads to ~/.cache, but just in case)
+*.pth
+*.pt
+*.onnx
+
+.claude/
+skills-lock.json
+
+# Archives and stray media — build the zip from a clean checkout instead
+*.zip
+*.tar.gz
+*.mp4
+*.mov
+
+# Public corpora downloaded into the repo root. IAM_dataset is 1.4 GB of word
+# images and reached a commit once, via `git add -A`, taking .git from 30 MB to
+# 1.2 GB. It is redownloadable and belongs outside version control.
+/IAM_dataset/
+/GNHK_dataset/
+
+# Datasets and generated pages — never in history. The corpus is redownloaded
+# from Kaggle and the synthetic pages are regenerated from their seeds.
+# Anchored with a leading slash: a bare `data/` also matches the source
+# package `backend/app/data/`, and silently drops corpus.py, augment.py and
+# dataset.py from every commit.
+/backend/data/
+/data/
+
+# Trained weights. resnet18 alone is 129 MB, over GitHub's 100 MB file limit,
+# and every checkpoint is reproducible with `python -m app.train`. The run's
+# results.json, eval.json, robustness.json and metrics.csv ARE committed:
+# they are the evidence the deck quotes, and they are small.
+*.ckpt
+
+# Compiled notes and the fine-tune log are user data, not source.
+/vault/
+/backend/runs_real/
+/backend/runs_real.log
+
+# The live feed palimtop tails. Pure runtime chatter: it rotates, it is
+# rewritten whenever it grows, and it says nothing a reader of the repo needs.
+# history.csv is the opposite and is deliberately NOT here: it is the learning
+# curve across runs and the only record that survives them.
+/backend/runs/activity.jsonl
+/backend/runs_distil/
+
+# Internal working notes and tooling — not part of the submission.
+/track.md
+/design/
+/.tastemaker/
+/docs/superpowers/

@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# palimtop — run from anywhere, like btop.
+#
+# Symlinked into ~/.local/bin, so this script has to find the project rather
+# than assume the shell is in it. It resolves its own symlink to locate the
+# backend directory, runs that checkout's .venv, and cds there because the
+# default paths inside the app (runs/, data/, vault/) are relative to it.
+set -eu
+
+self=$0
+# Follow symlinks without readlink -f, which BSD and busybox do not have.
+while [ -L "$self" ]; do
+    link=$(ls -ld -- "$self" | sed 's/.*-> //')
+    case $link in
+        /*) self=$link ;;
+        *)  self=$(dirname -- "$self")/$link ;;
+    esac
+done
+BACKEND=$(cd -- "$(dirname -- "$self")/.." && pwd)
+
+PYTHON=$BACKEND/.venv/bin/python
+[ -x "$PYTHON" ] || PYTHON=$(command -v python3)
+[ -x "$PYTHON" ] || { echo "palimtop: no python found (looked for $BACKEND/.venv/bin/python)" >&2; exit 1; }
+
+cd -- "$BACKEND"
+exec "$PYTHON" -m app.tui.palimtop "$@"

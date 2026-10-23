@@ -1,0 +1,31 @@
+timestamp,run,round,backbone,pages_labelled,regions_hand,regions_teacher,regions_total,train_crops,val_crops,test_crops,hand_accuracy,hand_samples,macro_f1,accuracy,ece,teacher_agreement,teacher_vs_hand,epochs,lr,disagreement_penalty,synthetic_ratio,train_seconds,device,note,n_theory,n_formula,n_plot_sketch,n_diagram,n_table
+2026-10-21T22:35:44,distil,0,squeezenet1_1,4,5,419,424,630,65,149,0.0,5,,,,0.1650943396226415,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",307,116,0,1,0
+2026-10-21T22:35:53,distil,1,squeezenet1_1,4,5,419,424,630,65,149,0.6,5,,,,0.7240566037735849,1.0,6,0.0001,3.0,,4.0,,"val is teacher-labelled, not truth",307,116,0,1,0
+2026-10-21T22:36:03,distil,2,squeezenet1_1,4,5,419,424,630,65,149,0.6,5,,,,0.7240566037735849,1.0,6,0.0001,3.0,,4.1,,"val is teacher-labelled, not truth",307,116,0,1,0
+2026-10-22T00:47:36,distil,0,squeezenet1_1,4,5,419,424,630,65,149,0.0,5,,,,0.1650943396226415,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",2294,649,0,1,0
+2026-10-22T00:47:46,distil,1,squeezenet1_1,4,5,419,424,630,65,149,0.6,5,,,,0.7240566037735849,1.0,6,0.0001,3.0,,4.5,,"val is teacher-labelled, not truth",2294,649,0,1,0
+2026-10-22T00:47:56,distil,2,squeezenet1_1,4,5,419,424,630,65,149,1.0,5,,,,0.7523584905660378,1.0,6,0.0001,3.0,,4.2,,"val is teacher-labelled, not truth",2294,649,0,1,0
+2026-10-22T00:48:06,distil,3,squeezenet1_1,4,5,419,424,630,65,149,1.0,5,,,,0.7452830188679245,1.0,6,0.0001,3.0,,3.8,,"val is teacher-labelled, not truth",2294,649,0,1,0
+2026-10-22T01:32:14,distil,0,squeezenet1_1,4,5,419,424,630,65,149,0.0,5,,,,0.1650943396226415,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",3545,928,0,1,0
+2026-10-22T01:32:30,distil,1,squeezenet1_1,4,5,419,424,630,65,149,0.6,5,,,,0.7240566037735849,1.0,6,0.0001,3.0,,6.8,,"val is teacher-labelled, not truth",3545,928,0,1,0
+2026-10-22T01:32:45,distil,2,squeezenet1_1,4,5,419,424,630,65,149,1.0,5,,,,0.7523584905660378,1.0,6,0.0001,3.0,,6.7,,"val is teacher-labelled, not truth",3545,928,0,1,0
+2026-10-22T01:33:00,distil,3,squeezenet1_1,4,5,419,424,630,65,149,1.0,5,,,,0.7452830188679245,1.0,6,0.0001,3.0,,6.5,,"val is teacher-labelled, not truth",3545,928,0,1,0
+2026-10-22T01:34:31,distil,0,squeezenet1_1,4,5,4090,4095,9207,673,353,0.0,5,,,,0.12332112332112333,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",3564,949,0,1,0
+2026-10-22T01:36:33,distil,1,squeezenet1_1,4,5,4090,4095,9207,673,353,1.0,5,,,,0.8236874236874236,1.0,6,0.0001,3.0,,78.6,,"val is teacher-labelled, not truth",3564,949,0,1,0
+2026-10-22T01:38:06,distil,0,squeezenet1_1,4,5,4214,4219,9417,681,399,0.0,5,,,,0.12799241526428062,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:39:16,distil,1,squeezenet1_1,4,5,4214,4219,9417,681,399,0.6,5,,,,0.8009006873666745,1.0,6,0.0001,3.0,,47.3,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:40:34,distil,2,squeezenet1_1,4,5,4214,4219,9417,681,399,1.0,5,,,,0.7843090779805642,1.0,6,0.0001,3.0,,54.2,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:43:26,distil,0,squeezenet1_1,4,5,419,424,630,65,149,0.0,5,,,,0.1650943396226415,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:43:40,distil,1,squeezenet1_1,4,5,419,424,630,65,149,0.6,5,,,,0.7240566037735849,1.0,6,0.0001,3.0,,7.6,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:43:53,distil,2,squeezenet1_1,4,5,419,424,630,65,149,1.0,5,,,,0.75,1.0,6,0.0001,3.0,,7.3,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:44:05,distil,3,squeezenet1_1,4,5,419,424,630,65,149,1.0,5,,,,0.7429245283018868,1.0,6,0.0001,3.0,,7.3,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:45:06,distil,0,squeezenet1_1,4,5,4214,4219,9417,681,399,0.0,5,,,,0.12799241526428062,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:47:15,distil,1,squeezenet1_1,4,5,4214,4219,9417,681,399,0.6,5,,,,0.8009006873666745,1.0,6,0.0001,3.0,,106.5,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:49:25,distil,2,squeezenet1_1,4,5,4214,4219,9417,681,399,1.0,5,,,,0.7843090779805642,1.0,6,0.0001,3.0,,107.9,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:55:53,distil,0,squeezenet1_1,4,5,4633,4638,10032,746,548,0.0,5,,,,0.13152220784821045,1.0,6,0.0001,3.0,,,,"synthetic start; val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T01:58:10,distil,1,squeezenet1_1,4,5,4633,4638,10032,746,548,1.0,5,,,,0.8158689090125054,1.0,6,0.0001,3.0,,110.5,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T02:00:26,distil,2,squeezenet1_1,4,5,4633,4638,10032,746,548,1.0,5,,,,0.8221216041397154,1.0,6,0.0001,3.0,,110.0,,"val is teacher-labelled, not truth",3631,1006,0,1,0
+2026-10-22T02:45:09,distil,0,squeezenet1_1,27,42,3339,3381,10142,11,5,0.047619047619047616,42,,,,0.13152266894781864,0.7380952380952381,6,0.0001,3.0,,,,synthetic start; val is hand-labelled,3654,1021,0,1,0
+2026-10-22T02:47:44,distil,1,squeezenet1_1,27,42,3339,3381,10142,11,5,0.7619047619047619,42,,,,0.7882805816937554,0.7380952380952381,6,0.0001,3.0,,120.8,,val is hand-labelled,3654,1021,0,1,0
+2026-10-22T02:50:00,distil,2,squeezenet1_1,27,42,3339,3381,10142,11,5,0.8571428571428571,42,,,,0.8006843455945253,0.7380952380952381,6,0.0001,3.0,,108.8,,val is hand-labelled,3654,1021,0,1,0
+2026-10-22T09:19:08,distil,3,squeezenet1_1,27,42,3339,3381,10142,11,5,0.8571428571428571,42,,,,0.8152266894781864,0.7380952380952381,6,0.0001,3.0,,108.5,,val is hand-labelled,3654,1021,0,1,0

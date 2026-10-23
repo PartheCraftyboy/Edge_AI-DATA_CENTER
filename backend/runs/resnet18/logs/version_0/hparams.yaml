@@ -1,0 +1,7 @@
+backbone: resnet18
+label_smoothing: 0.0
+lr: 0.0003
+max_epochs: 15
+num_classes: 5
+pretrained: true
+weight_decay: 0.0001

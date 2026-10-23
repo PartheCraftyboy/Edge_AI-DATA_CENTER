@@ -1,0 +1,336 @@
+/* Palimpsest — Scriptorium. Tokens are the locked set in .tastemaker/style-lock.md;
+   do not add one without re-running the contrast checker. */
+:root{
+  --bg:#fcf8ef; --surface:#f2eee5; --plate:#fffdf7; --text:#1e1a11;
+  --primary:#7e704f; --on-primary:#ffffff; --secondary:#e3ded1;
+  --accent:#6e7655; --border:#e1ded5; --rule:#d8d3c6; --axis:#b5ad9c;
+  --muted:#6b6354; --faint:#746b59; --ink:#3f3a2c;
+  --warn:#9a5a2a; --warn-strong:#8c4a22; --warn-line:#d8b08c; --warn-bg:#fbf4ea; --warn-edge:#b5733a;
+  --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
+  /* Radius scale. Two values carry the whole interface — 2px for things
+     inside a panel, 3px for the panel itself — plus a pill. They were
+     spelled as literals in 27 places with two strays (a 4px drop zone and a
+     1px canvas) that nothing else matched, which is how a scale quietly
+     becomes a habit. */
+  --r-sm:2px; --r-md:3px; --r-pill:999px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s12:48px;
+  --ease:cubic-bezier(.2,.7,.3,1);
+  --serif:"Newsreader",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  /* Region classes. Colour is never the only carrier: every box also prints its class name. */
+  --c-THEORY:#2a78d6; --c-FORMULA:#eb6834; --c-PLOT_SKETCH:#1baf7a; --c-DIAGRAM:#8a5cd6; --c-TABLE:#c4407a;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit}
+.mono{font-family:var(--mono)}
+[hidden]{display:none!important}
+
+.wrap{display:grid;grid-template-columns:244px minmax(0,1fr);min-height:100dvh}
+@media (max-width:880px){.wrap{grid-template-columns:minmax(0,1fr)} .side{position:static!important;height:auto!important}}
+
+/* ---------- sidebar ---------- */
+/* A flex column whose children must NOT shrink. The default is flex-shrink:1,
+   so once the notes list grew past the viewport every other child was
+   compressed to fit: the tab strip collapsed to a 1px rule and the Write
+   view became unreachable. It was invisible at first and got worse with
+   every note compiled, which is why it read as a missing feature rather
+   than as a layout bug. The list is the only part that scrolls. */
+.side{border-right:1px solid var(--border);padding:var(--s6) var(--s5);position:sticky;top:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+.side > *{flex:0 0 auto}
+/* The active panel is the only thing that scrolls. `min-height:0` is the
+   part that is easy to miss: a flex item will not shrink below its content
+   without it, so the overflow never engages and the squashing moves to the
+   siblings instead. */
+/* `margin-inline` pulls the panel into the sidebar's padding and
+   `padding-inline` gives the space straight back, so a row's hover fill can
+   reach past the text column while still being exactly as wide as the box
+   that scrolls it. Putting the negative margin on the row instead made every
+   row wider than its container and produced a horizontal scrollbar under the
+   list. `overflow-x:hidden` is the guard against the next thing that tries. */
+#side-write,#side-notebook,#side-label,#side-fix{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;margin-inline:calc(var(--s3) * -1);padding-inline:var(--s3)}
+#side-write[hidden],#side-notebook[hidden],#side-label[hidden],#side-fix[hidden]{display:none}
+#side-notebook .list,#side-label .list{flex:1 1 auto;min-height:0}
+.brand{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s5)}
+.brand b{font:600 17px/1 var(--serif);letter-spacing:-.01em}
+.brand small{display:block;font-size:10px;color:var(--faint);letter-spacing:.07em;text-transform:uppercase;margin-top:3px}
+/* Four tabs. The selected state used to be carried by --surface on --bg,
+   which the style lock measures at 1.09:1 and lists as decorative, never the
+   sole carrier of state — and it showed: the tab strip was invisible enough
+   that the Write view could not be found. The carrier is now a 2px --primary
+   underline, 4.59:1 on bg and text-safe, with the surface fill and the
+   darker label left as reinforcement rather than as the whole signal. */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:var(--s4);overflow:hidden}
+.tabs button{appearance:none;border:0;border-bottom:2px solid transparent;background:transparent;padding:8px 0 6px;color:var(--muted);cursor:pointer;font-size:12.5px;font-weight:500;transition:color 120ms var(--ease),background-color 120ms var(--ease)}
+.tabs button:hover{color:var(--text);background:var(--surface)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);border-bottom-color:var(--primary);font-weight:600}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.btn{width:100%;height:36px;border:1px solid var(--primary);background:transparent;color:var(--primary);border-radius:var(--r-md);font:500 13px/1 var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:var(--s2);transition:background-color 150ms var(--ease),color 150ms var(--ease)}
+.btn:hover{background:var(--primary);color:var(--on-primary)}
+.btn.solid{background:var(--primary);color:var(--on-primary)}
+.btn.solid:hover{background:#6d6143}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:focus-visible,.nb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sh{font:600 10px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:var(--s6) 0 var(--s3)}
+.list{display:flex;flex-direction:column}
+/* One selected-state language across the app: a 2px --primary marker, on the
+   bottom edge for a tab and the leading edge for a row. Deliberately not a
+   colour swap, because the lock measures --primary against --accent at
+   1.02:1, so a hue change can never be the thing that tells two states
+   apart here. Hover was previously a text-colour shift alone, which on a
+   13px row in a 244px column is close to no feedback at all; the fill is
+   what makes the whole row read as the target. The negative inline margin
+   lets fill and marker reach past the sidebar's padding while the label
+   stays on the same vertical as every heading in the column. */
+.nb{appearance:none;border:0;border-left:2px solid transparent;border-radius:var(--r-sm);background:transparent;text-align:left;display:flex;align-items:baseline;gap:var(--s2);padding:5px var(--s2) 5px 10px;color:var(--muted);cursor:pointer;font-size:13px;transition:color 120ms var(--ease),background-color 120ms var(--ease),border-color 120ms var(--ease)}
+.nb:hover{color:var(--text);background:var(--surface)}
+.nb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.nb[aria-current="true"]{color:var(--text);font-weight:500;background:var(--surface);border-left-color:var(--primary)}
+.nb span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.nb .n{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--faint);flex:none}
+.nb .n.warn{color:var(--warn)}
+.empty-side{font-size:12px;color:var(--faint);margin:0}
+select{width:100%;height:32px;border:1px solid var(--border);background:var(--plate);color:var(--text);border-radius:var(--r-md);padding:0 8px;font:12.5px var(--sans)}
+select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.modelnote{font:400 10.5px/1.5 var(--mono);color:var(--faint);margin:6px 0 0}
+.status{margin-top:auto;padding-top:var(--s4);border-top:1px solid var(--border);font-size:11px;line-height:1.6;color:var(--faint)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
+.dot.off{background:var(--warn-edge)}
+
+/* ---------- document ---------- */
+.doc{padding:var(--s12) var(--s8) 96px;min-width:0}
+.dochead,.row{display:grid;grid-template-columns:104px minmax(0,66ch);gap:var(--s6)}
+.dochead{margin-bottom:var(--s8)}
+@media (max-width:1080px){.dochead,.row{grid-template-columns:minmax(0,1fr)!important} .marg{max-width:160px}}
+.dochead .hd{grid-column:2}
+@media (max-width:1080px){.dochead .hd,.row .body,.prov{grid-column:1!important}}
+.kicker{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 var(--s3)}
+h1{font:400 39px/1.12 var(--serif);letter-spacing:-.018em;margin:0 0 var(--s4);text-wrap:balance}
+.standfirst{font:400 17.5px/1.6 var(--serif);color:var(--muted);margin:0 0 var(--s5);max-width:56ch}
+.byline{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);font:400 11px/1.4 var(--mono);color:var(--faint);padding-top:var(--s4);border-top:1px solid var(--rule)}
+.byline b{color:var(--muted);font-weight:500}
+.byline b.warn{color:var(--warn)}
+
+.row{margin-bottom:var(--s6);align-items:start;animation:fade 300ms var(--ease) both}
+.row .body{grid-column:2;min-width:0}
+.marg{grid-column:1;appearance:none;background:transparent;border:0;padding:0;cursor:pointer;display:block;width:100%;text-align:right}
+.marg .fac{border:1px solid var(--border);background:var(--plate);border-radius:var(--r-sm);overflow:hidden;display:block;transition:border-color 150ms var(--ease)}
+.marg .fac canvas{display:block;width:100%;height:auto}
+.marg:hover .fac,.marg:focus-visible .fac{border-color:var(--primary)}
+.marg:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-md)}
+.marg .cf{display:block;font:400 9.5px/1.3 var(--mono);color:var(--faint);margin-top:5px;letter-spacing:.03em}
+.marg .cf em{font-style:normal;color:var(--muted)}
+.marg[data-low="1"] .cf em{color:var(--warn)}
+.marg[data-low="1"] .fac{border-color:var(--warn-line);border-style:dashed}
+
+.body p{font:400 16.5px/1.68 var(--serif);margin:0 0 var(--s4)}
+.body p.lede::first-letter{float:left;font-size:52px;line-height:.86;padding:4px 8px 0 0;color:var(--primary);font-weight:500}
+.eq{background:var(--plate);border:1px solid var(--border);border-radius:var(--r-sm);padding:var(--s6) var(--s4);display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font:25px var(--serif);overflow-x:auto}
+.eq .katex{font-size:1.05em}
+.eq .answer{font-family:var(--mono);font-size:16px;color:var(--accent);border-left:1px solid var(--rule);padding-left:12px}
+.eqsrc{display:flex;justify-content:space-between;gap:var(--s3);align-items:baseline;flex-wrap:wrap;font:400 10.5px/1.5 var(--mono);color:var(--faint);margin:var(--s2) 0 0}
+.eqsrc code{color:var(--muted);word-break:break-all}
+
+figure{margin:0;background:var(--plate);border:1px solid var(--border);border-radius:var(--r-sm);padding:var(--s5) var(--s4) var(--s3)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font:400 12px/1.5 var(--serif);color:var(--muted);padding-top:var(--s3);margin-top:var(--s3);border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap}
+figcaption .mono{font-size:10px;color:var(--faint)}
+.refused{font:400 13px/1.6 var(--sans);color:var(--muted);background:var(--surface);border:1px dashed var(--rule);border-radius:var(--r-sm);padding:var(--s4) var(--s5)}
+
+.body table{border-collapse:collapse;width:100%;font:13px var(--sans)}
+.body th{font:600 10.5px/1 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--faint);text-align:left;padding:0 var(--s3) var(--s2) 0;border-bottom:1px solid var(--muted)}
+.body td{padding:9px var(--s3) 9px 0;border-bottom:1px solid var(--rule)}
+
+.review{border:1px solid var(--warn-line);border-left:3px solid var(--warn-edge);background:var(--warn-bg);border-radius:var(--r-sm);padding:var(--s4) var(--s5);font-size:13.5px;line-height:1.6;color:var(--warn)}
+.review h4{margin:0 0 6px;font:600 12px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--warn-strong)}
+
+.prov{grid-column:2;margin-top:var(--s8);padding-top:var(--s4);border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:center;font:400 11px/1 var(--mono);color:var(--faint)}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 10px;background:var(--surface);color:var(--muted)}
+.pill i{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+.pill[data-low="1"] i{background:var(--warn-edge)}
+.notes{grid-column:2;margin-top:var(--s4);font:400 11px/1.6 var(--mono);color:var(--faint)}
+
+/* states */
+.state{max-width:56ch;margin:12vh auto 0;text-align:center}
+.state h2{font:400 28px/1.2 var(--serif);margin:0 0 var(--s3)}
+.state p{font:16px/1.6 var(--serif);color:var(--muted);margin:0 0 var(--s6)}
+.state .btn{width:auto;padding:0 var(--s6);display:inline-flex}
+.drop{border:1.5px dashed var(--rule);border-radius:var(--r-md);padding:var(--s12) var(--s6);transition:border-color 150ms var(--ease),background-color 150ms var(--ease)}
+.drop.over{border-color:var(--primary);background:var(--surface)}
+.state.error h2{color:var(--warn-strong)}
+.state.error p{color:var(--warn)}
+.spinner{width:28px;height:28px;margin:0 auto var(--s5);border:2px solid var(--rule);border-top-color:var(--primary);border-radius:50%;animation:spin 900ms linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* dialog */
+dialog{border:1px solid var(--border);border-radius:var(--r-md);background:var(--plate);padding:0;max-width:min(880px,94vw);box-shadow:0 18px 50px rgba(30,26,17,.17)}
+dialog::backdrop{background:rgba(30,26,17,.42)}
+.dlghead{display:flex;align-items:baseline;gap:var(--s3);padding:var(--s4) var(--s5);border-bottom:1px solid var(--rule)}
+.dlghead h3{margin:0;font:500 16px/1.2 var(--serif)}
+.dlghead .mono{font-size:10px;color:var(--faint);margin-left:auto}
+.dlgbody{padding:var(--s5)}
+.dlgbody svg{display:block;width:100%;height:auto;border:1px solid var(--border)}
+.dlgfoot{padding:0 var(--s5) var(--s5);display:flex;justify-content:flex-end;gap:var(--s2)}
+.dlgfoot button{appearance:none;border:1px solid var(--border);background:var(--surface);color:var(--muted);font:500 12px/1 var(--sans);padding:8px 14px;border-radius:var(--r-sm);cursor:pointer}
+.dlgfoot button:hover{color:var(--text);border-color:var(--muted)}
+
+/* ---------- label view ---------- */
+.labeler{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:var(--s6);padding:var(--s6) var(--s6) var(--s8);min-width:0}
+@media (max-width:1180px){.labeler{grid-template-columns:minmax(0,1fr)}}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2);margin-bottom:var(--s3)}
+.chip{appearance:none;border:1px solid var(--border);background:var(--plate);color:var(--text);border-radius:var(--r-pill);padding:5px 11px 5px 9px;font:500 12px/1 var(--sans);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip i{width:9px;height:9px;border-radius:var(--r-sm);flex:none}
+.chip kbd{font:10px var(--mono);color:var(--faint)}
+.chip[aria-pressed="true"]{border-color:var(--text);background:var(--surface)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.toolbar .spacer{flex:1}
+.toolbar .btn{width:auto;padding:0 var(--s4);height:32px}
+.stage{position:relative;background:var(--plate);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;user-select:none;touch-action:none}
+.stage canvas{display:block;width:100%;height:auto;cursor:crosshair}
+.hint{font:400 11px/1.6 var(--mono);color:var(--faint);margin:var(--s2) 0 0}
+.panel{border:1px solid var(--border);border-radius:var(--r-md);background:var(--plate);padding:var(--s4) var(--s5);margin-bottom:var(--s4)}
+.panel h3{font:600 10px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:0 0 var(--s3)}
+.panel p{margin:0 0 var(--s3);font-size:12.5px;color:var(--muted)}
+.counts{width:100%;border-collapse:collapse;font:11.5px var(--mono)}
+.counts th{font:600 9.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);text-align:right;padding:0 0 6px}
+.counts th:first-child,.counts td:first-child{text-align:left}
+.counts td{text-align:right;padding:4px 0;border-top:1px solid var(--rule);color:var(--muted)}
+.counts td.low{color:var(--warn)}
+.row2{display:grid;grid-template-columns:1fr 70px;gap:var(--s2);margin-bottom:var(--s3)}
+.row2 input{height:32px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--plate);padding:0 8px;font:12.5px var(--mono);width:100%}
+.meter{height:4px;background:var(--surface);border-radius:var(--r-sm);overflow:hidden;margin:var(--s2) 0}
+.meter span{display:block;height:100%;background:var(--primary);transform-origin:left;transform:scaleX(var(--sx,0));transition:transform 300ms var(--ease)}
+.result{font:12px/1.7 var(--mono);color:var(--muted)}
+.result b{color:var(--text);font-weight:500}
+.result .err{color:var(--warn)}
+.pagelist{max-height:280px;overflow-y:auto}
+.pagelist .nb .n.done{color:var(--accent)}
+
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* ---------- write view: workbench, ink on the left, the note on the right ---------- */
+.bench{--left:56%;display:grid;grid-template-columns:minmax(320px,var(--left)) 6px minmax(300px,1fr);height:100dvh;min-width:0}
+@media (max-width:1000px){.bench{grid-template-columns:minmax(0,1fr);height:auto} .bench .splitter,.bench .pane-note{display:none}}
+.pane-ink{display:flex;flex-direction:column;min-width:0;min-height:0;padding:var(--s4) var(--s4) 0}
+.inkbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2);margin-bottom:var(--s3)}
+.tool{appearance:none;border:1px solid var(--border);background:var(--plate);color:var(--muted);border-radius:var(--r-md);height:30px;padding:0 10px;font:500 12px/1 var(--sans);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.tool:hover{color:var(--text);border-color:var(--muted)}
+.tool[aria-pressed="true"]{background:var(--surface);color:var(--text);border-color:var(--text)}
+.tool:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tool:disabled{opacity:.45;cursor:not-allowed}
+.inkbar .sep{width:1px;height:20px;background:var(--rule);margin:0 2px}
+.inkbar .spacer{flex:1}
+.inkbar label{display:inline-flex;align-items:center;gap:6px;font:12px var(--sans);color:var(--muted);cursor:pointer}
+.inkbar .btn{width:auto;height:30px;padding:0 var(--s4)}
+.paper{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:var(--s4)}
+/* The page fills whichever dimension binds and keeps its proportions, so it
+   reads as a sheet of paper rather than a letterboxed strip with dead space
+   under it. `align-items:center` on .paper above is the other half: it was
+   flex-start, which pinned the sheet to the top of the pane. */
+.sheet{position:relative;height:100%;width:auto;aspect-ratio:1600/1500;max-width:100%;max-height:100%;box-shadow:0 1px 2px rgba(30,26,17,.08),0 6px 20px rgba(30,26,17,.06)}
+.sheet canvas{display:block;width:100%;height:100%;border-radius:var(--r-sm)}
+/* Paper and its dot grid are CSS, never pixels. `padBlob` exports this
+   canvas's own bitmap, so anything painted into it is sent to the compiler
+   as ink — and a dot grid is the worst possible thing to send, because the
+   dots are thin like pen strokes and `drop_slabs` filters by thickness, so
+   they would survive every guard and land in the ink mask. The bitmap holds
+   ink alone and is transparent; the export composites it onto white. */
+.sheet #pad{cursor:crosshair;touch-action:none;background-color:#fff;
+  background-image:radial-gradient(circle at center, var(--rule) 1.1px, transparent 1.2px);
+  background-size:26px 26px;background-position:13px 13px}
+.sheet #pad.erasing{cursor:cell}
+.sheet #padov{position:absolute;inset:0;pointer-events:none}
+.inkstatus{display:flex;gap:var(--s4);flex-wrap:wrap;font:400 10.5px/1 var(--mono);color:var(--faint);padding:var(--s3) 2px var(--s3)}
+.inkstatus b{color:var(--muted);font-weight:500}
+.inkstatus b.warn{color:var(--warn)}
+.splitter{cursor:col-resize;background:transparent;position:relative}
+.splitter::after{content:"";position:absolute;inset:0 2px;background:var(--border);transition:background-color 150ms var(--ease)}
+.splitter:hover::after,.splitter:focus-visible::after{background:var(--primary)}
+.splitter:focus-visible{outline:none}
+.pane-note{overflow-y:auto;min-width:0;padding:var(--s8) var(--s6) var(--s12);border-left:0}
+.pane-note .dochead,.pane-note .row{grid-template-columns:72px minmax(0,1fr);gap:var(--s4)}
+.pane-note h1{font-size:28px}
+.pane-note .standfirst{font-size:15.5px}
+.pane-note .state{margin-top:18vh}
+.row.lit .body{outline:1.5px solid var(--primary);outline-offset:6px;border-radius:var(--r-sm)}
+.row.lit .marg .fac{border-color:var(--primary)}
+.busy-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--primary);animation:pulse 1s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:.25}to{opacity:1}}
+
+/* ---------- correction ----------
+   The reading can be wrong while the class and the confidence are right.
+   Kept quiet until wanted: a link under the block, not a control competing
+   with the note, because most blocks are correct and a row of buttons on
+   every one of them would read as a form rather than as a page. */
+.fixbar{margin-top:var(--s3);padding-top:var(--s2);border-top:1px dotted var(--rule);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2)}
+.fixlink{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--rule)}
+.fixlink:hover{color:var(--primary);text-decoration-color:currentColor}
+.fixlink:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-sm)}
+.fixrow{display:flex;align-items:flex-start;gap:var(--s2);width:100%;flex-wrap:wrap}
+.fixlabel{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding-top:7px;min-width:72px}
+.fixtext{flex:1;min-width:220px;font:13px/1.5 var(--mono);color:var(--text);background:var(--plate);border:1px solid var(--border);border-radius:var(--r-md);padding:6px 8px;resize:vertical}
+.fixtext:focus-visible,.fixclass:focus-visible{outline:2px solid var(--accent);outline-offset:-1px}
+.fixclass{font:13px/1 var(--sans);color:var(--text);background:var(--plate);border:1px solid var(--border);border-radius:var(--r-md);padding:7px 8px}
+.fixsave{appearance:none;border:1px solid var(--primary);background:var(--primary);color:var(--on-primary);border-radius:var(--r-md);font:500 12.5px/1 var(--sans);padding:8px 12px;cursor:pointer}
+.fixsave:hover{background:#6d6143}
+.fixdone{font-size:12px;color:var(--accent)}
+.fixnote{font-size:12px;color:var(--muted)}
+@media (max-width:880px){.fixlabel{min-width:0}}
+
+
+/* ---------- corrections, as a card ----------
+   One region at a time rather than a list. Fifty-three rows on a page asks
+   the reader to make fifty-three independent judgements while looking at all
+   of them at once, and none of the crops ends up big enough to actually
+   read. The card gives the crop the full width, puts the whole judgement on
+   two keys, and only shows the correction form once the answer is "no" — so
+   confirming, which is most of them, costs one keystroke. */
+.cardstage{display:flex;align-items:flex-start;justify-content:center;padding:var(--s8) var(--s6) var(--s12);min-height:0}
+.card{position:relative;width:100%;max-width:840px;background:var(--plate);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s6) var(--s6) var(--s5);box-shadow:0 1px 2px rgba(30,26,17,.07),0 10px 30px rgba(30,26,17,.07);touch-action:pan-y;cursor:grab}
+.card:active{cursor:grabbing}
+.card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.cardcount{font:11px/1 var(--mono);color:var(--faint);letter-spacing:.06em;margin-bottom:var(--s4)}
+.cardcrop{border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg);overflow:hidden;display:flex;justify-content:center;min-height:96px}
+.cardcrop canvas{display:block;max-width:100%;height:auto}
+.cardguess{margin-top:var(--s5)}
+.cardkind{display:block;font:11px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:var(--s3)}
+.cardkind em{color:var(--faint);font-style:normal}
+.cardkind b{color:var(--warn);font-weight:600}
+
+/* Two targets, equal weight: the question is genuinely a coin toss and
+   styling one as primary would bias the answer. --primary and --accent are
+   1.02:1 against each other per the lock, so the two sides are told apart by
+   which edge carries the rule, never by hue alone. */
+.cardacts{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s6)}
+.swipe{appearance:none;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--r-md);padding:14px var(--s4);font:500 13.5px/1 var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:var(--s2);transition:background-color 120ms var(--ease),border-color 120ms var(--ease)}
+.swipe .key{font-family:var(--mono);font-size:15px;color:var(--faint)}
+.swipe.no{border-left:3px solid var(--warn-edge)}
+.swipe.yes{border-right:3px solid var(--primary)}
+.swipe:hover{background:var(--surface);border-color:var(--muted)}
+.swipe:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card[data-lean="yes"]{border-color:var(--primary)}
+.card[data-lean="no"]{border-color:var(--warn-edge)}
+.cardform:not(:empty){margin-top:var(--s5);padding-top:var(--s4);border-top:1px dotted var(--rule)}
+.cardend{text-align:center;padding:12vh var(--s6);max-width:48ch}
+.cardend h2{font:var(--w-title,600) 24px/1.3 var(--serif);margin:0 0 var(--s3)}
+.cardend p{color:var(--muted);margin:0 0 var(--s6)}
+.cardend .btn{width:auto;display:inline-flex;padding:0 var(--s5)}
+
+.fixstats{display:grid;gap:2px;font:11px/1.6 var(--mono);color:var(--faint);margin-bottom:var(--s4)}
+.fixstats b{color:var(--text);font-weight:600}
+.qread{font:13px/1.6 var(--mono);color:var(--text);background:var(--surface);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:var(--s2);overflow-wrap:anywhere;max-height:8.5em;overflow-y:auto}
+.qread em{color:var(--faint);font-style:italic}
+.qmeta{font:11px/1.6 var(--mono);color:var(--faint)}
+.qempty{color:var(--muted);padding:var(--s8) 0;text-align:center}
+@media (max-width:880px){.cardacts{grid-template-columns:minmax(0,1fr)}}
+
+/* Symbols a keyboard does not have and a formula needs. Small and quiet:
+   they sit under the field and are only reached when a correction is
+   actually being typed, so they must not compete with the card's two
+   real actions. */
+.mathkeys{display:flex;gap:var(--s1);flex-wrap:wrap}
+.mathkey{appearance:none;min-width:30px;height:28px;padding:0 7px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--plate);color:var(--text);font:14px/1 var(--serif);cursor:pointer;transition:background-color 120ms var(--ease),border-color 120ms var(--ease)}
+.mathkey:hover{background:var(--surface);border-color:var(--muted)}
+.mathkey:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
